@@ -25,7 +25,10 @@ import {
 } from '@wordpress/url';
 import { useInstanceId, withSafeTimeout } from '@wordpress/compose';
 import { useSelect } from '@wordpress/data';
+
+/* eslint-disable import/no-extraneous-dependencies */
 import { focus } from '@wordpress/dom';
+/* eslint-enable import/no-extraneous-dependencies */
 
 /**
  * Internal dependencies
@@ -96,6 +99,7 @@ function LinkControl( {
 	settings,
 	onChange = noop,
 	showInitialSuggestions,
+	showCreatePages,
 } ) {
 	const wrapperNode = useRef();
 	const instanceId = useInstanceId( LinkControl );
@@ -305,7 +309,7 @@ function LinkControl( {
 						/>
 					) ) }
 
-					{ ! isInitialSuggestions && (
+					{ showCreatePages && ! isInitialSuggestions && (
 						<LinkControlSearchCreate
 							searchTerm={ inputValue }
 							onClick={ async () => {
