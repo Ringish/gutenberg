@@ -37,6 +37,7 @@ import { placeCaretAtHorizontalEdge } from '@wordpress/dom';
  * Internal dependencies
  */
 import { toolbarSubmenuIcon, itemSubmenuIcon } from './icons';
+/* eslint-enable import/no-extraneous-dependencies */
 
 function NavigationLinkEdit( {
 	attributes,
@@ -231,6 +232,17 @@ function NavigationLinkEdit( {
 								value={ link }
 								showInitialSuggestions={ true }
 								showCreatePages={ true }
+								createEmptyPage={ ( pageTitle ) =>
+									apiFetch( {
+										path: `/wp/v2/pages`,
+										data: {
+											title: pageTitle,
+											content: '',
+											status: 'publish', // TODO: use publish?
+										},
+										method: 'POST',
+									} )
+								}
 								onChange={ ( {
 									title: newTitle = '',
 									url: newURL = '',
