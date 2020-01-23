@@ -305,6 +305,7 @@ function LinkControl( {
 											url: newPage.link,
 											type: newPage.type,
 										} );
+										setIsEditingLink( false );
 									} }
 									key={ `${ suggestion.id }-${ suggestion.type }` }
 									itemProps={ buildSuggestionItemProps( suggestion, index ) }
