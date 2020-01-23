@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { noop, startsWith } from 'lodash';
+import { noop, startsWith, uniqueId } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -179,9 +179,9 @@ function LinkControl( {
 			type = 'internal';
 		}
 
-		return Promise.resolve( [
-			{
-				id: '-1',
+		return Promise.resolve(
+			[ {
+				id: uniqueId(),
 				title: val,
 				url: type === 'URL' ? prependHTTP( val ) : val,
 				type,
@@ -214,7 +214,7 @@ function LinkControl( {
 		// the a11y benefits afforded by `URLInput` to all suggestions (eg:
 		// keyboard handling, ARIA roles...etc).
 		return results.concat( {
-			id: '-2',
+			id: uniqueId(),
 			? results[ 0 ].concat( results[ 1 ] )
 			title: '',
 			url: '',
