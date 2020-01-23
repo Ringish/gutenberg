@@ -499,7 +499,7 @@ describe( 'Creating Entities (eg: Posts, Pages)', () => {
 
 			return ( <LinkControl
 				value={ link }
-				showCreatePages={ true }
+				showCreateEntity={ true }
 				onChange={ ( suggestion ) => {
 					setLink( suggestion );
 				} }
@@ -558,7 +558,7 @@ describe( 'Creating Entities (eg: Posts, Pages)', () => {
 			render(
 				<LinkControl
 					showInitialSuggestions={ true } // should show even if we're not showing initial suggestions
-					showCreatePages={ true }
+					showCreateEntity={ true }
 					createEmptyPage={ ( title = '(no title)' ) => Promise.resolve( {
 						type: 'page', // here we're returning a Page but any entity can be returned
 						id: 123,
@@ -597,7 +597,7 @@ describe( 'Creating Entities (eg: Posts, Pages)', () => {
 		act( () => {
 			render(
 				<LinkControl
-					showCreatePages={ true }
+					showCreateEntity={ true }
 					createEmptyPage={ jest.fn() }
 				/>, container
 			);
