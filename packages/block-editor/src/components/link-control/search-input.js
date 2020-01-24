@@ -64,32 +64,35 @@ const LinkControlSearchInput = ( {
 					</Notice>
 				) }
 			</div>
-			<URLInput
-				className="block-editor-link-control__search-input"
-				value={ value }
-				onChange={ selectItemHandler }
-				onKeyDown={ ( event ) => {
-					if ( event.keyCode === ENTER ) {
-						return;
-					}
-					handleLinkControlOnKeyDown( event );
-				} }
-				onKeyPress={ handleLinkControlOnKeyPress }
-				placeholder={ __( 'Search or type url' ) }
-				__experimentalRenderSuggestions={ renderSuggestions }
-				__experimentalFetchLinkSuggestions={ fetchSuggestions }
-				__experimentalHandleURLSuggestions={ true }
-				__experimentalShowInitialSuggestions={ showInitialSuggestions }
-			/>
+			<div className="block-editor-link-control__search-input-wrapper">
+				<URLInput
+					className="block-editor-link-control__search-input"
+					value={ value }
+					onChange={ selectItemHandler }
+					onKeyDown={ ( event ) => {
+						if ( event.keyCode === ENTER ) {
+							return;
+						}
+						handleLinkControlOnKeyDown( event );
+					} }
+					onKeyPress={ handleLinkControlOnKeyPress }
+					placeholder={ __( 'Search or type url' ) }
+					__experimentalRenderSuggestions={ renderSuggestions }
+					__experimentalFetchLinkSuggestions={ fetchSuggestions }
+					__experimentalHandleURLSuggestions={ true }
+					__experimentalShowInitialSuggestions={ showInitialSuggestions }
+				/>
 
-			<Button
-				disabled={ ! value.length }
-				type="reset"
-				label={ __( 'Reset' ) }
-				icon="no-alt"
-				className="block-editor-link-control__search-reset"
-				onClick={ onReset }
-			/>
+				<Button
+					disabled={ ! value.length }
+					type="reset"
+					label={ __( 'Reset' ) }
+					icon="no-alt"
+					className="block-editor-link-control__search-reset"
+					onClick={ onReset }
+				/>
+			</div>
+
 		</form>
 	);
 };
