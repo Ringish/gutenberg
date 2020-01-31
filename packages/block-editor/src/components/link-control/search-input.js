@@ -20,14 +20,6 @@ const handleLinkControlOnKeyDown = ( event ) => {
 	}
 };
 
-const handleLinkControlOnKeyPress = ( event ) => {
-	const { keyCode } = event;
-
-	event.stopPropagation();
-
-	if ( keyCode === ENTER ) {
-	}
-};
 
 const LinkControlSearchInput = ( {
 	value,
@@ -68,7 +60,6 @@ const LinkControlSearchInput = ( {
 						}
 						handleLinkControlOnKeyDown( event );
 					} }
-					onKeyPress={ handleLinkControlOnKeyPress }
 					placeholder={ __( 'Search or type url' ) }
 					__experimentalRenderSuggestions={ renderSuggestions }
 					__experimentalFetchLinkSuggestions={ fetchSuggestions }
