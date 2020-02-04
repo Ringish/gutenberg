@@ -332,7 +332,7 @@ export default compose( [
 			getBlockParents,
 			getClientIdsOfDescendants,
 			hasSelectedInnerBlock,
-			getSettings,
+			getColors,
 		} = select( 'core/block-editor' );
 		const { clientId } = ownProps;
 		const rootBlock = getBlockParents( clientId )[ 0 ];
@@ -342,7 +342,7 @@ export default compose( [
 		const showSubmenuIcon =
 			!! navBlockAttrs.showSubmenuIcon && hasDescendants;
 		const isParentOfSelectedBlock = hasSelectedInnerBlock( clientId, true );
-		const { colors = [] } = getSettings();
+		const colors = getColors();
 
 		return {
 			isParentOfSelectedBlock,

@@ -1592,3 +1592,14 @@ export function isNavigationMode( state ) {
 export function didAutomaticChange( state ) {
 	return !! state.automaticChangeStatus;
 }
+
+/**
+ * Returns the editor settings colors.
+ *
+ * @param {Object} state Editor state.
+ *
+ * @return {Array} The editor settings colors array.
+ */
+export function getColors ( state ) {
+	return get( getSettings( state ), 'colors', [] );
+}
