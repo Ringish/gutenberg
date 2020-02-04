@@ -305,7 +305,7 @@ function NavigationLinkEdit( {
 /**
  * Helper function which provided an array of color objects,
  * a color slug, and a color value,
- * returns the color value matching that value, or undefined.
+ * returns the given color value, the value matching that slug, or undefined.
  *
  * @param {Array}  colors Array of color objects as set by the theme or by the editor defaults.
  * @param {string} colorSlug A string containing the color slug.

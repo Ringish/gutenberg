@@ -55,7 +55,7 @@ export const getColorObjectByColorValue = ( colors, colorValue ) => {
  *
  * const { getSettings } = select( 'core/block-editor' );
  * const { colors = {} } = getSettings();
- * const color = getColorObjectByColorSlug( colors, 'primary' );
+ * const color = getColorObjectByColorSlug( colors, 'foreground-light' );
  *
  * // color => { name: "Gray", slug: "foreground-light", color: "#686868" }
  *
