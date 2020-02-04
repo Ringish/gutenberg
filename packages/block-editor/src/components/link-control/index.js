@@ -9,7 +9,13 @@ import { noop, startsWith, uniqueId } from 'lodash';
  */
 import { Button, ExternalLink, VisuallyHidden } from '@wordpress/components';
 import { __, sprintf } from '@wordpress/i18n';
-import { useRef, useCallback, useState, Fragment, useEffect } from '@wordpress/element';
+import {
+	useRef,
+	useCallback,
+	useState,
+	Fragment,
+	useEffect,
+} from '@wordpress/element';
 import {
 	safeDecodeURI,
 	filterURLForDisplay,
@@ -176,8 +182,8 @@ function LinkControl( {
 			type = 'internal';
 		}
 
-		return Promise.resolve(
-			[ {
+		return Promise.resolve( [
+			{
 				id: uniqueId(),
 				title: val,
 				url: type === 'URL' ? prependHTTP( val ) : val,
@@ -199,7 +205,10 @@ function LinkControl( {
 		// If it's potentially a URL search then concat on a URL search suggestion
 		// just for good measure. That way once the actual results run out we always
 		// have a URL option to fallback on.
-		results = couldBeURL && ! args.isInitialSuggestions ? results[ 0 ].concat( results[ 1 ] ) : results[ 0 ];
+		results =
+			couldBeURL && ! args.isInitialSuggestions
+				? results[ 0 ].concat( results[ 1 ] )
+				: results[ 0 ];
 
 		// Here we append a faux suggestion to represent a "CREATE" option. This
 		// is detected in the rendering of the search results and handeled as a
@@ -216,7 +225,6 @@ function LinkControl( {
 		// incorrectly named entity being created.
 		return results.concat( {
 			id: uniqueId(),
-			? results[ 0 ].concat( results[ 1 ] )
 			title: val, // placeholder
 			url: val, // must match the existing `<input>`s text value
 			type: CREATE_TYPE,
@@ -245,34 +253,40 @@ function LinkControl( {
 			const isInternal = startsWith( val, '#' );
 			const isTel = protocol.includes( 'tel' );
 
-			const handleManualEntry =
+			const maybeURL =
 				isInternal ||
 				isMailto ||
 				isTel ||
 				isURL( val ) ||
-		const maybeURL = isInternal || isMailto || isTel || isURL( val ) || ( val && val.includes( 'www.' ) );
+				( val && val.includes( 'www.' ) );
 
-			return handleManualEntry
+			return maybeURL
 				? handleDirectEntry( val, args )
-		return ( maybeURL ) ? handleDirectEntry( val, args ) : handleEntitySearch( val, args );
+				: handleEntitySearch( val, args );
 		},
 		[ handleDirectEntry, fetchSearchSuggestions ]
 	);
 
-	const handleOnCreate = async (entityTitle) => {
+	const handleOnCreate = async ( entityTitle ) => {
 		let newEntity;
 
 		setIsResolvingLink( true );
 		setErrorMsg( null );
 		try {
-			newEntity = await createEntity('page', entityTitle );
+			newEntity = await createEntity( 'page', entityTitle );
 		} catch ( error ) {
-			setErrorMsg( error.msg || __( 'An unknown error occurred during Page creation. Please try again.' ) );
+			setErrorMsg(
+				error.msg ||
+					__(
+						'An unknown error occurred during Page creation. Please try again.'
+					)
+			);
 		}
 
 		setIsResolvingLink( false );
 
-		if ( newEntity ) { // only set if request is resolved
+		if ( newEntity ) {
+			// only set if request is resolved
 			onChange( newEntity );
 			setIsEditingLink( false );
 		} else {
@@ -302,17 +316,26 @@ function LinkControl( {
 		);
 
 		const directLinkEntryTypes = [ 'url', 'mailto', 'tel', 'internal' ];
-		const isSingleDirectEntryResult = suggestions.length === 1 && directLinkEntryTypes.includes( suggestions[ 0 ].type.toLowerCase() );
-		const shouldShowCreateEntity = showCreateEntity && createEntity && ! isSingleDirectEntryResult && ! isInitialSuggestions;
-			: undefined;
-		const labelText = isInitialSuggestions
-			? __( 'Recently updated' )
+		const isSingleDirectEntryResult =
+			suggestions.length === 1 &&
+			directLinkEntryTypes.includes(
+				suggestions[ 0 ].type.toLowerCase()
+			);
+		const shouldShowCreateEntity =
+			showCreateEntity &&
+			createEntity &&
+			! isSingleDirectEntryResult &&
+			! isInitialSuggestions;
 
 		// According to guidelines aria-label should be added if the label
 		// itself is not visible.
 		// See: https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Roles/listbox_role
-		const searchResultsLabelId = isInitialSuggestions ? `block-editor-link-control-search-results-label-${ instanceId }` : undefined;
-		const labelText = isInitialSuggestions ? __( 'Recently updated' ) : sprintf( __( 'Search results for %s' ), inputValue );
+		const searchResultsLabelId = isInitialSuggestions
+			? `block-editor-link-control-search-results-label-${ instanceId }`
+			: undefined;
+		const labelText = isInitialSuggestions
+			? __( 'Recently updated' )
+			: sprintf( __( 'Search results for %s' ), inputValue );
 		const ariaLabel = isInitialSuggestions ? undefined : labelText;
 		const SearchResultsLabel = (
 			<span
@@ -327,18 +350,32 @@ function LinkControl( {
 		return (
 			<div className="block-editor-link-control__search-results-wrapper">
 				{ isInitialSuggestions ? (
+					SearchResultsLabel
+				) : (
+					<VisuallyHidden>{ SearchResultsLabel }</VisuallyHidden>
+				) }
 
-				<div { ...suggestionsListProps } className={ resultsListClasses } aria-labelledby={ searchResultsLabelId }>
+				<div
+					{ ...suggestionsListProps }
+					className={ resultsListClasses }
+					aria-labelledby={ searchResultsLabelId }
+				>
 					{ suggestions.map( ( suggestion, index ) => {
-						if ( shouldShowCreateEntity && CREATE_TYPE === suggestion.type ) {
+						if (
+							shouldShowCreateEntity &&
+							CREATE_TYPE === suggestion.type
+						) {
 							return (
 								<LinkControlSearchCreate
 									searchTerm={ inputValue }
 									onClick={ () => {
-										handleOnCreate(suggestion.title);
-									 } }
+										handleOnCreate( suggestion.title );
+									} }
 									key={ `${ suggestion.id }-${ suggestion.type }` }
-									itemProps={ buildSuggestionItemProps( suggestion, index ) }
+									itemProps={ buildSuggestionItemProps(
+										suggestion,
+										index
+									) }
 									isSelected={ index === selectedSuggestion }
 								/>
 							);
@@ -351,39 +388,32 @@ function LinkControl( {
 						}
 
 						return (
-					{ ...suggestionsListProps }
-					className={ resultsListClasses }
-					aria-labelledby={ searchResultsLabelId }
-				>
-					{ suggestions.map( ( suggestion, index ) => (
 							<LinkControlSearchItem
 								key={ `${ suggestion.id }-${ suggestion.type }` }
-								itemProps={ buildSuggestionItemProps( suggestion, index ) }
-								suggestion,
-								index
-							) }
+								itemProps={ buildSuggestionItemProps(
+									suggestion,
+									index
+								) }
 								suggestion={ suggestion }
 								onClick={ () => {
 									stopEditing();
 									onChange( { ...value, ...suggestion } );
 								} }
 								isSelected={ index === selectedSuggestion }
-							isURL={ manualLinkEntryTypes.includes(
-								suggestion.type.toLowerCase()
-							) }
+								isURL={ directLinkEntryTypes.includes(
+									suggestion.type.toLowerCase()
+								) }
 								searchTerm={ inputValue }
 							/>
 						);
 					} ) }
 				</div>
-
 			</div>
 		);
 	};
 
 	return (
 		<div
-
 			tabIndex={ -1 }
 			ref={ wrapperNode }
 			className="block-editor-link-control"
@@ -401,10 +431,12 @@ function LinkControl( {
 					onSelect={ ( suggestion ) => {
 						stopEditing();
 
-						if (suggestion.type && CREATE_TYPE === suggestion.type) {
-							handleOnCreate(inputValue);
+						if (
+							suggestion.type &&
+							CREATE_TYPE === suggestion.type
+						) {
+							handleOnCreate( inputValue );
 						} else {
-
 							handleSelectSuggestion( suggestion, value )();
 						}
 					} }
@@ -414,14 +446,13 @@ function LinkControl( {
 					showInitialSuggestions={ showInitialSuggestions }
 					errorMsg={ errorMsg }
 				/>
-			) }
-
 			) : (
-				: <Fragment>
+				<Fragment>
 					<VisuallyHidden>
-						className="screen-reader-text"
-						<p aria-label={ __( 'Currently selected' ) } id={ `current-link-label-${ instanceId }` }>
-					>
+						<p
+							aria-label={ __( 'Currently selected' ) }
+							id={ `current-link-label-${ instanceId }` }
+						>
 							{ __( 'Currently selected' ) }:
 						</p>
 					</VisuallyHidden>
@@ -463,7 +494,7 @@ function LinkControl( {
 						onChange={ onChange }
 					/>
 				</Fragment>
-			}
+			) }
 		</div>
 	);
 }
