@@ -342,7 +342,7 @@ export default compose( [
 		const showSubmenuIcon =
 			!! navBlockAttrs.showSubmenuIcon && hasDescendants;
 		const isParentOfSelectedBlock = hasSelectedInnerBlock( clientId, true );
-		const { colors = {} } = getSettings();
+		const { colors = [] } = getSettings();
 
 		return {
 			isParentOfSelectedBlock,
