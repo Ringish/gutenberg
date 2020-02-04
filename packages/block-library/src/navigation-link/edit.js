@@ -2,7 +2,7 @@
  * External dependencies
  */
 import classnames from 'classnames';
-import { escape, unescape } from 'lodash';
+import { escape, unescape, get } from 'lodash';
 
 /**
  * WordPress dependencies
@@ -29,6 +29,7 @@ import {
 	InspectorControls,
 	RichText,
 	__experimentalLinkControl as LinkControl,
+	getColorObjectByColorSlug,
 } from '@wordpress/block-editor';
 import { isURL, prependHTTP } from '@wordpress/url';
 import { Fragment, useState, useEffect, useRef } from '@wordpress/element';
@@ -304,6 +305,29 @@ function NavigationLinkEdit( {
 	);
 }
 
+/**
+ * Helper function which provided an array of color objects,
+ * a color slug, and a color value,
+ * returns the color value matching that value, or undefined.
+ *
+ * @param {Array}  colors Array of color objects as set by the theme or by the editor defaults.
+ * @param {string} colorSlug A string containing the color slug.
+ * @param {string} customColor An, optional, color value.
+ * @return {string|undefined} Color value according to the given data.
+ */
+function getRGBColor( colors, colorSlug, customColor ) {
+	if ( customColor ) {
+		return customColor;
+	}
+
+	if ( ! colors || ! colorSlug ) {
+		return;
+	}
+
+	return get( getColorObjectByColorSlug( colors, colorSlug ), 'color' );
+}
+
+// function getRGB
 export default compose( [
 	withSelect( ( select, ownProps ) => {
 		const {
@@ -311,6 +335,7 @@ export default compose( [
 			getBlockParents,
 			getClientIdsOfDescendants,
 			hasSelectedInnerBlock,
+			getSettings,
 		} = select( 'core/block-editor' );
 		const { clientId } = ownProps;
 		const rootBlock = getBlockParents( clientId )[ 0 ];
@@ -321,11 +346,17 @@ export default compose( [
 			!! navigationBlockAttributes.showSubmenuIcon && hasDescendants;
 		const isParentOfSelectedBlock = hasSelectedInnerBlock( clientId, true );
 
+		const { colors = {} } = getSettings();
+		const rgbTextColor = getRGBColor( colors, navigationBlockAttributes.textColor, navigationBlockAttributes.customTextColor );
+		const rgbBackgroundColor = getRGBColor( colors, navigationBlockAttributes.backgroundColor, navigationBlockAttributes.customBackgroundColor );
+
 		return {
 			isParentOfSelectedBlock,
 			hasDescendants,
 			showSubmenuIcon,
 			navigationBlockAttributes,
+			rgbTextColor,
+			rgbBackgroundColor,
 		};
 	} ),
 	withDispatch( ( dispatch, ownProps, registry ) => {
