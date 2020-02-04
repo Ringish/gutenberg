@@ -46,7 +46,8 @@ function NavigationLinkEdit( {
 	setAttributes,
 	showSubmenuIcon,
 	insertLinkBlock,
-	navBlockAttrs,
+	textColor,
+	backgroundColor,
 	rgbTextColor,
 	rgbBackgroundColor,
 } ) {
@@ -58,12 +59,6 @@ function NavigationLinkEdit( {
 		nofollow,
 		description,
 	} = attributes;
-
-	/*
-	 * Navigation Block attributes.
-	 */
-	const { textColor, backgroundColor } = navBlockAttrs;
-
 	const link = {
 		title: title ? unescape( title ) : '',
 		url,
@@ -324,7 +319,8 @@ export default compose( [
 			isParentOfSelectedBlock,
 			hasDescendants,
 			showSubmenuIcon,
-			navBlockAttrs,
+			textColor: navBlockAttrs.textColor,
+			backgroundColor: navBlockAttrs.backgroundColor,
 			rgbTextColor: get(
 				getColorObjectByColorSlug( navBlockAttrs.textColor ),
 				'color',
