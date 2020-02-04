@@ -48,6 +48,8 @@ function NavigationLinkEdit( {
 	showSubmenuIcon,
 	insertLinkBlock,
 	navBlockAttrs,
+	rgbTextColor,
+	rgbBackgroundColor,
 } ) {
 	const {
 		label,
@@ -61,12 +63,7 @@ function NavigationLinkEdit( {
 	/*
 	 * Navigation Block attributes.
 	 */
-	const {
-		textColor,
-		rgbTextColor,
-		backgroundColor,
-		rgbBackgroundColor,
-	} = navBlockAttrs;
+	const { textColor,  backgroundColor } = navBlockAttrs;
 
 	const link = {
 		title: title ? unescape( title ) : '',
