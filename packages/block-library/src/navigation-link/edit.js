@@ -29,7 +29,6 @@ import {
 	InspectorControls,
 	RichText,
 	__experimentalLinkControl as LinkControl,
-	getColorObjectByColorSlug,
 } from '@wordpress/block-editor';
 import { isURL, prependHTTP } from '@wordpress/url';
 import { Fragment, useState, useEffect, useRef } from '@wordpress/element';
@@ -302,28 +301,6 @@ function NavigationLinkEdit( {
 	);
 }
 
-/**
- * Helper function which provided an array of color objects,
- * a color slug, and a color value,
- * returns the given color value, the value matching that slug, or undefined.
- *
- * @param {Array}  colors Array of color objects as set by the theme or by the editor defaults.
- * @param {string} colorSlug A string containing the color slug.
- * @param {string} customColor An, optional, color value.
- * @return {string|undefined} Color value according to the given data.
- */
-function getRGBColor( colors, colorSlug, customColor ) {
-	if ( customColor ) {
-		return customColor;
-	}
-
-	if ( ! colors || ! colorSlug ) {
-		return;
-	}
-
-	return get( getColorObjectByColorSlug( colors, colorSlug ), 'color' );
-}
-
 // function getRGB
 export default compose( [
 	withSelect( ( select, ownProps ) => {
@@ -332,7 +309,7 @@ export default compose( [
 			getBlockParents,
 			getClientIdsOfDescendants,
 			hasSelectedInnerBlock,
-			getColors,
+			getColorObjectByColorSlug,
 		} = select( 'core/block-editor' );
 		const { clientId } = ownProps;
 		const rootBlock = getBlockParents( clientId )[ 0 ];
@@ -342,21 +319,20 @@ export default compose( [
 		const showSubmenuIcon =
 			!! navBlockAttrs.showSubmenuIcon && hasDescendants;
 		const isParentOfSelectedBlock = hasSelectedInnerBlock( clientId, true );
-		const colors = getColors();
 
 		return {
 			isParentOfSelectedBlock,
 			hasDescendants,
 			showSubmenuIcon,
 			navBlockAttrs,
-			rgbTextColor: getRGBColor(
-				colors,
-				navBlockAttrs.textColor,
+			rgbTextColor: get(
+				getColorObjectByColorSlug( navBlockAttrs.textColor ),
+				'color',
 				navBlockAttrs.customTextColor
 			),
-			rgbBackgroundColor: getRGBColor(
-				colors,
-				navBlockAttrs.backgroundColor,
+			rgbBackgroundColor: get(
+				getColorObjectByColorSlug( navBlockAttrs.backgroundColor ),
+				'color',
 				navBlockAttrs.customBackgroundColor
 			),
 		};
