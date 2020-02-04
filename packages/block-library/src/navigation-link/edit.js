@@ -47,7 +47,7 @@ function NavigationLinkEdit( {
 	setAttributes,
 	showSubmenuIcon,
 	insertLinkBlock,
-	navigationBlockAttributes,
+	navBlockAttrs,
 } ) {
 	const {
 		label,
@@ -66,7 +66,7 @@ function NavigationLinkEdit( {
 		rgbTextColor,
 		backgroundColor,
 		rgbBackgroundColor,
-	} = navigationBlockAttributes;
+	} = navBlockAttrs;
 
 	const link = {
 		title: title ? unescape( title ) : '',
@@ -339,24 +339,20 @@ export default compose( [
 		} = select( 'core/block-editor' );
 		const { clientId } = ownProps;
 		const rootBlock = getBlockParents( clientId )[ 0 ];
-		const navigationBlockAttributes = getBlockAttributes( rootBlock );
-		const hasDescendants = !! getClientIdsOfDescendants( [ clientId ] )
-			.length;
+		const navBlockAttrs = getBlockAttributes( rootBlock );
+		const hasDescendants = !! getClientIdsOfDescendants( [ clientId ] ).length;
 		const showSubmenuIcon =
-			!! navigationBlockAttributes.showSubmenuIcon && hasDescendants;
+			!! navBlockAttrs.showSubmenuIcon && hasDescendants;
 		const isParentOfSelectedBlock = hasSelectedInnerBlock( clientId, true );
-
 		const { colors = {} } = getSettings();
-		const rgbTextColor = getRGBColor( colors, navigationBlockAttributes.textColor, navigationBlockAttributes.customTextColor );
-		const rgbBackgroundColor = getRGBColor( colors, navigationBlockAttributes.backgroundColor, navigationBlockAttributes.customBackgroundColor );
 
 		return {
 			isParentOfSelectedBlock,
 			hasDescendants,
 			showSubmenuIcon,
-			navigationBlockAttributes,
-			rgbTextColor,
-			rgbBackgroundColor,
+			navBlockAttrs,
+			rgbTextColor: getRGBColor( colors, navBlockAttrs.textColor, navBlockAttrs.customTextColor ),
+			rgbBackgroundColor: getRGBColor( colors, navBlockAttrs.backgroundColor, navBlockAttrs.customBackgroundColor ),
 		};
 	} ),
 	withDispatch( ( dispatch, ownProps, registry ) => {
