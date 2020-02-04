@@ -1600,6 +1600,18 @@ export function didAutomaticChange( state ) {
  *
  * @return {Array} The editor settings colors array.
  */
-export function getColors ( state ) {
+export function getColors( state ) {
 	return get( getSettings( state ), 'colors', [] );
 }
+
+/**
+ * Returns the color object matching that slug, or undefined.
+ *
+ * @param {Object} state Editor state.
+ * @param {string} colorSlug  A string containing the color slug.
+ *
+ * @return {Object} Color object included in the editor settings colors, or Undefined.
+ */
+export const getColorObjectByColorSlug = ( state, colorSlug ) => {
+	return find( getColors( state ), { slug: colorSlug } );
+};
