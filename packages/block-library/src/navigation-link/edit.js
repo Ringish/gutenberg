@@ -63,7 +63,7 @@ function NavigationLinkEdit( {
 	/*
 	 * Navigation Block attributes.
 	 */
-	const { textColor,  backgroundColor } = navBlockAttrs;
+	const { textColor, backgroundColor } = navBlockAttrs;
 
 	const link = {
 		title: title ? unescape( title ) : '',
@@ -337,7 +337,8 @@ export default compose( [
 		const { clientId } = ownProps;
 		const rootBlock = getBlockParents( clientId )[ 0 ];
 		const navBlockAttrs = getBlockAttributes( rootBlock );
-		const hasDescendants = !! getClientIdsOfDescendants( [ clientId ] ).length;
+		const hasDescendants = !! getClientIdsOfDescendants( [ clientId ] )
+			.length;
 		const showSubmenuIcon =
 			!! navBlockAttrs.showSubmenuIcon && hasDescendants;
 		const isParentOfSelectedBlock = hasSelectedInnerBlock( clientId, true );
@@ -348,8 +349,16 @@ export default compose( [
 			hasDescendants,
 			showSubmenuIcon,
 			navBlockAttrs,
-			rgbTextColor: getRGBColor( colors, navBlockAttrs.textColor, navBlockAttrs.customTextColor ),
-			rgbBackgroundColor: getRGBColor( colors, navBlockAttrs.backgroundColor, navBlockAttrs.customBackgroundColor ),
+			rgbTextColor: getRGBColor(
+				colors,
+				navBlockAttrs.textColor,
+				navBlockAttrs.customTextColor
+			),
+			rgbBackgroundColor: getRGBColor(
+				colors,
+				navBlockAttrs.backgroundColor,
+				navBlockAttrs.customBackgroundColor
+			),
 		};
 	} ),
 	withDispatch( ( dispatch, ownProps, registry ) => {
