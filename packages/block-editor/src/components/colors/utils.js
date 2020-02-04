@@ -47,6 +47,28 @@ export const getColorObjectByColorValue = ( colors, colorValue ) => {
 };
 
 /**
+ * Provided an array of color objects as set by the theme
+ * or by the editor defaults, and a color slug,
+ * returns the color object matching that value or undefined.
+ *
+ * Example:
+ *
+ * const { getSettings } = select( 'core/block-editor' );
+ * const { colors = {} } = getSettings();
+ * const color = getColorObjectByColorSlug( colors, 'primary' );
+ *
+ * // color => { name: "Gray", slug: "foreground-light", color: "#686868" }
+ *
+ * @param {Array}   colors     Array of color objects as set by the theme or by the editor defaults.
+ * @param {?string} colorSlug  A string containing the color slug.
+ * @return {?Object} Color object included in the colors array whose color property equals colorValue.
+ *                   Returns undefined if no color object matches this requirement.
+ */
+export const getColorObjectByColorSlug = ( colors, colorSlug ) => {
+	return find( colors, { slug: colorSlug } );
+};
+
+/**
  * Returns a class based on the context a color is being used and its slug.
  *
  * @param {string} colorContextName Context/place where color is being used e.g: background, text etc...
