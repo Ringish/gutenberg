@@ -357,6 +357,7 @@ export class ImageEdit extends Component {
 				/>
 				{ url && (
 					<MediaReplaceFlow
+						mediaId={ id }
 						mediaURL={ url }
 						allowedTypes={ ALLOWED_MEDIA_TYPES }
 						accept="image/*"

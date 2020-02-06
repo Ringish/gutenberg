@@ -27,6 +27,7 @@ import LinkViewer from '../url-popover/link-viewer';
 
 const MediaReplaceFlow = ( {
 	mediaURL,
+	mediaId,
 	allowedTypes,
 	accept,
 	onSelect,
@@ -142,6 +143,7 @@ const MediaReplaceFlow = ( {
 						<MediaUpload
 							onSelect={ ( media ) => selectMedia( media ) }
 							allowedTypes={ allowedTypes }
+							value={ mediaId }
 							render={ ( { open } ) => (
 								<MenuItem icon="admin-media" onClick={ open }>
 									{ __( 'Open Media Library' ) }
